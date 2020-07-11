@@ -27,3 +27,6 @@ if (process.env.MONGODB_CONNECTION_STRING) {
 } else {
   console.log("Please provide a valid MONGODB_CONNECTION_STRING!!");
 }
+
+// Set routes
+app.use("/user", require("./routes/userRouter"));
