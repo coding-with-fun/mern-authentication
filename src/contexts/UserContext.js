@@ -31,14 +31,17 @@ export const UserProvider = (props) => {
           headers: { "x-auth-token": token },
         });
 
+        console.log(userRes);
+
         setUserData({
-          token,
+          token: token,
           user: userRes.data,
         });
+        localStorage.setItem("auth-token", token);
       }
     };
     fetchDetails();
-  });
+  }, []);
   return (
     <UserContext.Provider
       value={{ userData: userData, setUserData: setUserData }}
