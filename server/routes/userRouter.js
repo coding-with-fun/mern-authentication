@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const auth = require("../middleware/auth");
 const User = require("../models/userModel");
 
 function validateEmail(email) {
@@ -119,4 +121,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// delete
+router.delete("/delete", auth, async (req, res) => {
+  try {
+    const deletedUser = User.findByIdAndDelete(req.user);
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 module.exports = router;
