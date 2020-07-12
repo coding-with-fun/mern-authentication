@@ -1,7 +1,15 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
+function validateEmail(email) {
+  // eslint-disable-next-line
+  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return re.test(String(email).toLowerCase());
+}
+
+// registering new user
 router.post("/register", async (req, res) => {
   try {
     const { email, password, confirmPassword, name } = req.body;
@@ -10,6 +18,12 @@ router.post("/register", async (req, res) => {
     if (!email || !password || !confirmPassword || !name) {
       return res.status(400).json({
         message: "All the fields are not entered!!",
+      });
+    }
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({
+        message: "Email address is not valid!!",
       });
     }
 
@@ -52,7 +66,56 @@ router.post("/register", async (req, res) => {
     const savedUser = await newUser.save();
     res.json(savedUser);
   } catch (err) {
-    res.code(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// login
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validate
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "All the fields are not entered!!",
+      });
+    }
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({
+        message: "Email address is not valid!!",
+      });
+    }
+
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User with the entered email address does not exist!!",
+      });
+    }
+
+    const passwordIsMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsMatch) {
+      return res.status(400).json({
+        message: "The entered password does not match with our database!!",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
