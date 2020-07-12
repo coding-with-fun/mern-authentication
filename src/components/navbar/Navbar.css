@@ -34,13 +34,6 @@
   color: black;
 }
 
-/* Custom page CSS */
-/* Not required for template or sticky footer method. */
-.footer .container {
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
 @media only screen and (max-width: 600px) {
   .nav-logo {
     margin-left: 0;

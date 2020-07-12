@@ -1,8 +1,10 @@
+.sign-up-form .btn,
 .sign-in-form .btn {
   text-transform: uppercase;
   border-radius: 10px;
 }
 
+.sign-up-form,
 .sign-in-form {
   width: 50%;
   max-width: 330px;
@@ -10,6 +12,7 @@
   margin: 0 auto;
 }
 
+.sign-up-form .form-control,
 .sign-in-form .form-control {
   position: relative;
   box-sizing: border-box;
@@ -20,17 +23,19 @@
   border-radius: 10px;
 }
 
+.sign-up-form .form-control:focus,
 .sign-in-form .form-control:focus {
   z-index: 2;
   box-shadow: 0 0 11px 4px;
 }
 
-.form-auth input[id="confirmPassword"],
+.sign-up-form input[id="confirmPassword"],
 .sign-in-form input[id="inputPassword"] {
   margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 600px) {
+  .sign-up-form,
   .sign-in-form {
     width: 100%;
   }
