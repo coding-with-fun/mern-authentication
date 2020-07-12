@@ -1,8 +1,12 @@
 import React from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function Navbar() {
+  const { userData, setUserData } = useContext(UserContext);
+  
   return (
     <div className="navigation">
       {/* Fixed navbar */}
@@ -26,19 +30,36 @@ export default function Navbar() {
           id="navbarNavAltMarkup"
         >
           <div className="navbar-nav">
-            {!false ? (
+            {!userData.user ? (
               <>
                 <Link to="/signin" className="btn btn-outline-light">
-                  <i class="fa fa-fw fa-sign-in"></i> Sign In
+                  <i className="fa fa-sign-in"></i> Sign In
                 </Link>
+
                 <Link to="/signup" className="btn btn-outline-light">
-                  <i class="fa fa-fw fa-user-plus"></i> Sign Up
+                  <i className="fa fa-user-plus"></i> Sign Up
                 </Link>
               </>
             ) : (
-              <Link to="/" className="btn btn-outline-light">
-                <i class="fa fa-fw fa-user"></i> Logout
-              </Link>
+              <>
+                <a
+                  className="btn btn-outline-light"
+                  onClick={() => {
+                    setUserData({
+                      token: undefined,
+                      user: undefined,
+                    });
+                    localStorage.setItem("auth-token", "");
+                  }}
+                  href="/"
+                >
+                  <i className="fa fa-sign-out"></i> Sign Out
+                </a>
+
+                <Link to="/" className="btn btn-outline-light">
+                  <i className="fa fa-user"></i> Profile
+                </Link>
+              </>
             )}
           </div>
         </div>

@@ -12,11 +12,10 @@
 .navbar-nav .btn {
   margin: 0 12px;
   border-radius: 5px;
-  align-self: center;
 }
 
 .content-body {
-  margin-top: 50pt;
+  margin-top: 80pt;
 }
 
 .footer {
@@ -35,8 +34,7 @@
   color: black;
 }
 
-/* Custom page CSS
-      -------------------------------------------------- */
+/* Custom page CSS */
 /* Not required for template or sticky footer method. */
 .footer .container {
   padding-right: 15px;
@@ -57,6 +55,10 @@
     width: 30%;
     align-self: flex-end;
     border-radius: 5px;
+  }
+
+  .content-body {
+    margin-top: 60pt;
   }
 
   .footer {

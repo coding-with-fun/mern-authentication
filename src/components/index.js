@@ -1,6 +1,6 @@
 export { default as Home } from "./pages/Home";
 
-export { default as Signin } from "./auth/Signin";
-export { default as Signup } from "./auth/Signup";
+export { default as SignInForm } from "./auth/SignInForm";
+export { default as SignUpForm } from "./auth/SignUpForm";
 
 export { default as Navbar } from "./navbar/Navbar";
