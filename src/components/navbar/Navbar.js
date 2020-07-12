@@ -1,12 +1,12 @@
-import React from "react";
-import "./Navbar.css";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import "./Navbar.css";
 
 export default function Navbar() {
   const { userData, setUserData } = useContext(UserContext);
-  
+  const history = useHistory();
+
   return (
     <div className="navigation">
       {/* Fixed navbar */}
@@ -42,7 +42,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <a
+                <div
                   className="btn btn-outline-light"
                   onClick={() => {
                     setUserData({
@@ -50,11 +50,11 @@ export default function Navbar() {
                       user: undefined,
                     });
                     localStorage.setItem("auth-token", "");
+                    history.push("/")
                   }}
-                  href="/"
                 >
                   <i className="fa fa-sign-out"></i> Sign Out
-                </a>
+                </div>
 
                 <Link to="/" className="btn btn-outline-light">
                   <i className="fa fa-user"></i> Profile

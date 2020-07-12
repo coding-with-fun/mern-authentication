@@ -3,10 +3,13 @@ import "./Form.css";
 import { UserContext } from "../../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+import AlertMessage from "../AlertMessage";
 
 export default function SignInForm() {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+
+  const [error, setError] = useState();
 
   const { setUserData } = useContext(UserContext);
 
@@ -15,19 +18,23 @@ export default function SignInForm() {
   const login = async (e) => {
     e.preventDefault();
 
-    const loginRes = await Axios.post("http://localhost:5000/user/login", {
-      email: inputEmail,
-      password: inputPassword,
-    });
+    try {
+      const loginRes = await Axios.post("http://localhost:5000/user/login", {
+        email: inputEmail,
+        password: inputPassword,
+      });
 
-    setUserData({
-      token: loginRes.data.token,
-      user: loginRes.data.user,
-    });
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
 
-    localStorage.setItem("auth-token", loginRes.data.token);
+      localStorage.setItem("auth-token", loginRes.data.token);
 
-    history.push("/");
+      history.push("/");
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+    }
   };
 
   return (
@@ -35,6 +42,12 @@ export default function SignInForm() {
       <form onSubmit={login} className="sign-in-form">
         <i className="fa fa-sign-in fa-5x"></i>
         <h1 className="h3 mb-3 font-weight-normal">Sign in</h1>
+        {error && (
+          <AlertMessage
+            message={error}
+            clearMessage={() => setError(undefined)}
+          />
+        )}
         <input
           type="email"
           id="inputEmail"

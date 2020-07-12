@@ -1,10 +1,9 @@
-import React from "react";
-import "./Form.css";
-import { useState } from "react";
 import Axios from "axios";
-import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
+import AlertMessage from "../AlertMessage";
+import "./Form.css";
 
 export default function SignUpForm() {
   const [name, setName] = useState("");
@@ -12,34 +11,40 @@ export default function SignUpForm() {
   const [inputPassword, setInputPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [error, setError] = useState();
+
   const { setUserData } = useContext(UserContext);
 
   const history = useHistory();
 
   const submit = async (e) => {
     e.preventDefault();
-    const newUser = {
-      name: name,
-      email: inputEmail,
-      password: inputPassword,
-      confirmPassword: confirmPassword,
-    };
+    try {
+      const newUser = {
+        name: name,
+        email: inputEmail,
+        password: inputPassword,
+        confirmPassword: confirmPassword,
+      };
 
-    await Axios.post("http://localhost:5000/user/register", newUser);
+      await Axios.post("http://localhost:5000/user/register", newUser);
 
-    const loginRes = await Axios.post("http://localhost:5000/user/login", {
-      email: inputEmail,
-      password: inputPassword,
-    });
+      const loginRes = await Axios.post("http://localhost:5000/user/login", {
+        email: inputEmail,
+        password: inputPassword,
+      });
 
-    setUserData({
-      token: loginRes.data.token,
-      user: loginRes.data.user,
-    });
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
 
-    localStorage.setItem("auth-token", loginRes.data.token)
+      localStorage.setItem("auth-token", loginRes.data.token);
 
-    history.push("/")
+      history.push("/");
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+    }
   };
 
   return (
@@ -47,6 +52,12 @@ export default function SignUpForm() {
       <form onSubmit={submit} className="sign-up-form">
         <i className="fa fa-user-plus fa-5x"></i>
         <h1 className="h3 mb-3 font-weight-normal">Sign up</h1>
+        {error && (
+          <AlertMessage
+            message={error}
+            clearMessage={() => setError(undefined)}
+          />
+        )}
         <input
           type="text"
           id="name"
