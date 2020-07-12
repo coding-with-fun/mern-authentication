@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
-import "./Form.css";
-import { UserContext } from "../../contexts/UserContext";
-import { useHistory } from "react-router-dom";
 import Axios from "axios";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 import AlertMessage from "../AlertMessage";
+import "./Form.css";
 
 export default function SignInForm() {
   const [inputEmail, setInputEmail] = useState("");
