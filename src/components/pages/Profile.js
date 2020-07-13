@@ -17,12 +17,6 @@ export default function Profile() {
               href="/"
               class="btn btn-primary"
             >
-              Update Account
-            </a>
-            <a
-              href="/"
-              class="btn btn-primary"
-            >
               Delete Account
             </a>
           </div>
