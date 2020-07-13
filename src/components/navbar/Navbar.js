@@ -76,7 +76,10 @@ export default function Navbar() {
         <div className="container">
           <span className="text-muted">
             © 2020 Copyright:
-            <a href="https://github.com/harsh2124/" target="blank">
+            <a
+              href="https://github.com/harsh2124/test-projects-react/tree/auth"
+              target="blank"
+            >
               <b> Harsh Patel</b>
             </a>
           </span>

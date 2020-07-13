@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { Home, Navbar, SignInForm, SignUpForm, Profile } from "./components";
+import { Home, Navbar, SignInForm, SignUpForm, Profile, PageNotFound } from "./components";
 import { UserContext } from "./contexts/UserContext";
 
 export default function AppRoutes() {
@@ -29,6 +29,7 @@ export default function AppRoutes() {
               userData.user ? <Redirect to="/" /> : <SignUpForm />
             }
           />
+          <Route path="/:url" component={PageNotFound} />
         </Switch>
       </BrowserRouter>
     </>
