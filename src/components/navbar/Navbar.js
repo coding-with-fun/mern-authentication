@@ -50,7 +50,6 @@ export default function Navbar() {
                       user: undefined,
                     });
                     localStorage.setItem("auth-token", "");
-                    localStorage.setItem("local-user-data", "");
                     history.push("/");
                   }}
                 >
