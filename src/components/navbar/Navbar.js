@@ -56,7 +56,7 @@ export default function Navbar() {
                   <i className="fa fa-sign-out"></i> Sign Out
                 </div>
 
-                <Link to="/" className="btn btn-outline-light">
+                <Link to="/profile" className="btn btn-outline-light">
                   <i className="fa fa-user"></i> Profile
                 </Link>
               </>
