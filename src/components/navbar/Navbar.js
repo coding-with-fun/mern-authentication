@@ -50,7 +50,8 @@ export default function Navbar() {
                       user: undefined,
                     });
                     localStorage.setItem("auth-token", "");
-                    history.push("/")
+                    localStorage.setItem("local-user-data", "");
+                    history.push("/");
                   }}
                 >
                   <i className="fa fa-sign-out"></i> Sign Out

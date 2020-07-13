@@ -4,41 +4,47 @@ import React, { createContext, useEffect, useState } from "react";
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
+  let token = localStorage.getItem("auth-token");
+  if (token === null) {
+    localStorage.setItem("auth-token", "");
+    token = "";
+  }
+
+  let localUserData = localStorage.getItem("local-user-data");
+  if (localUserData) localUserData = JSON.parse(localUserData);
+  if (localUserData === null) {
+    localStorage.setItem("local-user-data", "");
+  }
   const [userData, setUserData] = useState({
-    token: undefined,
-    user: undefined,
+    token: token,
+    user: localUserData,
   });
 
   useEffect(() => {
     const fetchDetails = async () => {
-      let token = localStorage.getItem("auth-token");
       if (token === null) {
-        localStorage.setItem("auth-token", "");
-        token = "";
-      }
+        const tokenRes = await Axios.post(
+          "http://localhost:5000/user/tokenIsValid",
+          null,
+          { headers: { "x-auth-token": token } }
+        );
 
-      const tokenRes = await Axios.post(
-        "http://localhost:5000/user/tokenIsValid",
-        null,
-        { headers: { "x-auth-token": token } }
-      );
-
-      if (tokenRes.data) {
-        const userRes = await Axios.get("http://localhost:5000/user/", {
-          headers: { "x-auth-token": token },
-        });
-
-        console.log(userRes);
-
+        let userRes = undefined;
+        if (tokenRes.data) {
+          userRes = await Axios.get("http://localhost:5000/user/", {
+            headers: { "x-auth-token": token },
+          });
+          localStorage.setItem("auth-token", token);
+          localStorage.setItem("local-user-data", JSON.stringify(userRes.data));
+        }
         setUserData({
           token: token,
-          user: userRes.data,
+          user: tokenRes.data ? userRes.data : localUserData,
         });
-        localStorage.setItem("auth-token", token);
       }
     };
     fetchDetails();
-  }, []);
+  }, [token, localUserData]);
   return (
     <UserContext.Provider
       value={{ userData: userData, setUserData: setUserData }}

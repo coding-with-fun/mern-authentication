@@ -40,6 +40,7 @@ export default function SignUpForm() {
       });
 
       localStorage.setItem("auth-token", loginRes.data.token);
+      localStorage.setItem("local-user-data", loginRes.data.user);
 
       history.push("/");
     } catch (error) {

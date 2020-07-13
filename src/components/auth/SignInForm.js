@@ -29,6 +29,7 @@ export default function SignInForm() {
         user: loginRes.data.user,
       });
 
+      localStorage.setItem("local-user-data", JSON.stringify(loginRes.data.user));
       localStorage.setItem("auth-token", loginRes.data.token);
 
       history.push("/");
